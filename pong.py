@@ -17,9 +17,9 @@ pixels_num = width * height
 batch_size = 60
 step_size = 40
 
-log_dir = "./log_gumball"
+log_dir = "./log_gumball_2"
 lr = 1e-4
-train_dir = "/train_522_312_b6s4_fc100_pos++_std_0.3_1e-4"
+train_dir = "/train_522_312_b6s4_fc100_auto_r_std_0.3_1e-4"
 
 
 # os.environ["CUDA_VISIBLE_DEVICES"] = '0'   #指定第一块GPU可用
@@ -28,7 +28,7 @@ train_dir = "/train_522_312_b6s4_fc100_pos++_std_0.3_1e-4"
 # config.gpu_options.allow_growth = True      #程序按需申请内存
 
 # sess = tf.Session(config = config)
-
+reward_mean = -21
 
 def prepro(I):
     I = I[35:195]
@@ -46,8 +46,10 @@ def discount_rewards(pre_r):
     for i in reversed(range(0, len(r))):
         if pre_r[i] != 0:
             sum_r = pre_r[i]
-            if pre_r[i] > 0:
+            if pre_r[i] > 0 and reward_mean < -1:
                 sum_r = 20
+            if pre_r[i] < 0 and reward_mean > 1:
+                sum_r = -20
         else:
             sum_r = sum_r * gamma + pre_r[i]
         r[i] = sum_r
@@ -128,8 +130,8 @@ def make_network():
 tf.reset_default_graph()
 pix_ph, action_ph, reward_ph, out_sym, opt_sym, merged_sym = make_network()
 
-resume = False
-# resume = True
+#resume = False
+resume = True
 render = False
 
 # sess = tf.Session(config = config)
@@ -156,7 +158,7 @@ batch_xs = []
 batch_ys = []
 step = pickle.load(open(log_dir + '/step.p', 'rb')) if resume and os.path.exists(log_dir + '/step.p') else 0
 episode_number = step
-reward_mean = -21.0
+#reward_mean = -21.0
 win = 0
 lose = 0
 
@@ -241,3 +243,7 @@ while True:
             if render: env.render()
 
 env.close()
+
+
+
+git
