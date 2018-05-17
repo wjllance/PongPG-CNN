@@ -7,10 +7,12 @@ Based on
 * [Deep Reinforcement Learning: Pong from Pixels](http://karpathy.github.io/2016/05/31/rl/)  Karpathy' Blog（1）
 * [gameofdimension/policy-gradient-pong](https://github.com/gameofdimension/policy-gradient-pong)（2）
 
-
+### Environment
+* tensorflow-cpu 1.8.0
+* PongDeterministic-v4
 
 ### Dependencies & Usage
-  refer to (2)
+* refer to (2)
   
 ### 主要改动
 ##### 1. 预处理：
@@ -31,4 +33,5 @@ Based on
 * 本方法中每次获得reward（+1/-1）作为一个step，每个step只取结束前60帧，每40step训练一次，一次训练的输入最大2400帧（还可自行调整）
     
 ### 训练结果 
-  网络规模较小，直接在CPU训练，大约14小时reward可以到0左右【（2）在pong-v0上训练50小时到达0附近】
+* 网络规模较小，直接在CPU训练，大约14小时reward可以到0左右【（2）在pong-v0上训练50小时到达0附近】
+* 持续训练约24小时左右可以达到+9左右reward， 据不完全统计此时对战Pong-v0还是有不小的胜率
